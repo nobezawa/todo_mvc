@@ -3,34 +3,47 @@ var app = app || {};
 (function () {
   'use strict';
 
-  let Register = React.createClass({
+  let TodoItem = React.createClass({
     render: function () {
       return (
-          <input
-              className="new-todo"
-              type="text"
-              onKeyPress={this._enterPress}
-          />
+          <p>{this.props.item}</p>
       );
-    },
-    _enterPress: function (e) {
-      if (e.key === 'Enter') {
-        console.log(e.target.value);
-      }
     }
   });
 
   let Box = React.createClass({
+    getInitialState: function() {
+      return {todo: app.Utils.getData()};
+    },
+    _enterPress: function (e) {
+      if (e.key === 'Enter') {
+        //console.log(e.target.value);
+        this.setState({todo: app.Utils.stack(e.target.value)});
+      }
+    },
     render: function () {
+      var todoItems = [];
+      if (this.state.todo.length !== 0) {
+        var todoItems = this.state.todo.map(function (todo) {
+          return (
+            <TodoItem item={todo} />
+          );
+        }, this);
+      }
+      console.log(todoItems);
       return(
           <div>
-            <Register/>
+            {/*<Register title={this.state.title} />*/}
+            <input type="text" className="new-todo" onKeyPress={this._enterPress} />
+            {/*<p>{this.state.title}</p>*/}
+            {(todoItems)}
           </div>
       );
     }
   });
 
   function render() {
+
     React.render(
       <Box/>,
       document.getElementsByClassName('todoapp')[0]

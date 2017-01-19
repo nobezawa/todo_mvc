@@ -2,6 +2,7 @@ var app = app || {};
 
 (function () {
   'use strict';
+  var list = [];
   app.Utils = {
     uuid: function () {
       var i, random;
@@ -18,6 +19,13 @@ var app = app || {};
     },
     pluralize: function (count, word) {
       return count === 1 ? word : word + 's';
+    },
+    stack: function (data) {
+      list.push(data);
+      return list;
+    },
+    getData: function () {
+      return list;
     }
   };
 })();
