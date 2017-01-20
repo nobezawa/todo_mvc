@@ -4,9 +4,25 @@ var app = app || {};
   'use strict';
 
   let TodoItem = React.createClass({
+    getInitialState: function() {
+      return {active: true};
+    },
+    _complete: function () {
+      //console.log(this.state.active);
+      //this.setState({active: false});
+    },
     render: function () {
+      let className = '';
+      if (this.state.active === false) {
+        className = 'completed';
+      }
       return (
-          <p>{this.props.item}</p>
+          <li className={className}>
+            <div className="view">
+            <input className="toggle" type="checkbox" onChange={this._complete()}/>
+            <label>{this.props.item}</label>
+            </div>
+          </li>
       );
     }
   });
@@ -19,6 +35,7 @@ var app = app || {};
       if (e.key === 'Enter') {
         //console.log(e.target.value);
         this.setState({todo: app.Utils.stack(e.target.value)});
+        e.target.value = '';
       }
     },
     render: function () {
@@ -30,13 +47,14 @@ var app = app || {};
           );
         }, this);
       }
-      console.log(todoItems);
       return(
           <div>
             {/*<Register title={this.state.title} />*/}
             <input type="text" className="new-todo" onKeyPress={this._enterPress} />
             {/*<p>{this.state.title}</p>*/}
+            <ul className="todo-list">
             {(todoItems)}
+            </ul>
           </div>
       );
     }
