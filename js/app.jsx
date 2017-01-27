@@ -8,8 +8,7 @@ var app = app || {};
       return {active: true};
     },
     _complete: function () {
-      //console.log(this.state.active);
-      //this.setState({active: false});
+      this.setState({active: false});
     },
     render: function () {
       let className = '';
@@ -19,8 +18,9 @@ var app = app || {};
       return (
           <li className={className}>
             <div className="view">
-            <input className="toggle" type="checkbox" onChange={this._complete()}/>
+            <input className="toggle" type="checkbox" onChange={this._complete}/>
             <label>{this.props.item}</label>
+            <button className="destroy" onClick={this.props.onDestroy} />
             </div>
           </li>
       );
@@ -38,12 +38,15 @@ var app = app || {};
         e.target.value = '';
       }
     },
+    onDestroy: function () {
+      console.log('destroy');
+    },
     render: function () {
       var todoItems = [];
       if (this.state.todo.length !== 0) {
-        var todoItems = this.state.todo.map(function (todo) {
+        todoItems = this.state.todo.map(function (todo) {
           return (
-            <TodoItem item={todo} />
+            <TodoItem item={todo} onDestroy={this.onDestroy} />
           );
         }, this);
       }
